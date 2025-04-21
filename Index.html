@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: white;
+            font-family: sans-serif;
+        }
+        #game-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        #error-message {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="error-message">Error: No se pudo cargar el modelo Akuma. Asegúrate de estar usando un servidor local.</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        let model;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('game-container').appendChild(renderer.domElement);
+
+        scene.background = new THREE.Color(0x101010);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enablePan = false;
+
+        const loader = new THREE.GLTFLoader();
+        loader.load('https://github.com/TomasMonitoX/RPGDefinitivo.git', function (gltf) {
+            model = gltf.scene;
+            scene.add(model);
+
+            model.position.set(0, -1.5, 0);
+            model.scale.set(2, 2, 2);
+
+            animate();
+        }, undefined, function (error) {
+            console.error("Error al cargar el modelo:", error);
+            document.getElementById('error-message').style.display = 'block';
+        });
+
+        const ambientLight = new THREE.AmbientLight(0x404040, 2);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        camera.position.z = 5;
+
+        window.addEventListener('keydown', function (event) {
+            if (!model) return;
+
+            switch (event.key.toLowerCase()) {
+                case 'a':
+                    model.position.x -= 0.1;
+                    break;
+                case 'd':
+                    model.position.x += 0.1;
+                    break;
+                case 'w':
+                    model.rotation.y += 0.2;
+                    break;
+                case 's':
+                    model.scale.multiplyScalar(1.1);
+                    break;
+                case 'r':
+                    model.scale.set(2, 2, 2);
+                    break;
+            }
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (model) {
+                model.rotation.y += 0.01;
+            }
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+
+</body>
+</html>

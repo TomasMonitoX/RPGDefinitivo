@@ -1,0 +1,101 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+/* Contenedor del juego */
+#game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1b1b1b;
+}
+
+/* Pantalla de juego */
+#game-screen {
+    position: relative;
+}
+
+/* Canvas de juego 3D */
+#game-canvas {
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e1e;
+    border: 3px solid #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Interfaz de usuario */
+#game-ui {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #ffffff;
+    font-size: 14px;
+    z-index: 2;
+}
+
+/* HUD - Barra de salud, mana y otros indicadores */
+#hud {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Barras de salud y mana */
+#health-bar, #mana-bar {
+    width: 200px;
+    height: 20px;
+    margin: 10px 0;
+    background-color: #444;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Barra de salud */
+#health-bar {
+    background-color: #8b0000;
+}
+
+#health-bar-inner {
+    height: 100%;
+    background-color: #ff0000;
+    transition: width 0.5s ease;
+}
+
+/* Barra de mana */
+#mana-bar {
+    background-color: #000080;
+}
+
+#mana-bar-inner {
+    height: 100%;
+    background-color: #0000ff;
+    transition: width 0.5s ease;
+}
+
+/* Información de nivel y experiencia */
+#level-experience {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #ffffff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+#level-experience p {
+    margin: 5px 0;
+}
